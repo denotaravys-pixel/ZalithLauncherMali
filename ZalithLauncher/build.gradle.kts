@@ -9,16 +9,12 @@ application {
     mainClass.set("com.example.MainKt")
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation(kotlin("stdlib"))
     // Add any other dependencies here
 }
 
-tasks.withType<Jar> { 
+tasks.withType<Jar> {
     manifest {
         attributes["Implementation-Title"] = "ZalithLauncher"
         attributes["Implementation-Version"] = version
