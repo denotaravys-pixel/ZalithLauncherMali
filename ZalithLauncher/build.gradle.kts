@@ -1,15 +1,29 @@
-// Code adjustments for build.gradle.kts
+// build.gradle.kts
 
-val getCFApiKey = { System.getenv("CURSEFORGE_API_KEY") ?: error("CURSEFORGE_API_KEY environment variable is not set") }
+plugins {
+    kotlin("jvm") version "1.5.31"
+    id("application")
+}
 
-...
-// Other content above
+application {
+    mainClass.set("com.example.MainKt")
+}
 
-val storePwd = System.getenv("SIGNING_STORE_PASSWORD") ?: error("SIGNING_STORE_PASSWORD environment variable is not set")
-val keyPwd = System.getenv("SIGNING_KEY_PASSWORD") ?: error("SIGNING_KEY_PASSWORD environment variable is not set")
-val keyAlias = System.getenv("SIGNING_KEY_ALIAS") ?: error("SIGNING_KEY_ALIAS environment variable is not set")
+repositories {
+    mavenCentral()
+}
 
-...
-// Other content below
+dependencies {
+    implementation(kotlin("stdlib"))
+    // Add any other dependencies here
+}
 
-applicationId = "com.movtery.zalithlauncher"
+tasks.withType<Jar> { 
+    manifest {
+        attributes["Implementation-Title"] = "ZalithLauncher"
+        attributes["Implementation-Version"] = version
+    }
+    from(
+        configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
+    )
+}
